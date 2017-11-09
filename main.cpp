@@ -1,32 +1,31 @@
+/*********************************************************************
+ Progect name: Laba3                                                  *
+ Project type: Win32 Console Application                              *
+ File name: main.cpp                                                  *
+ Language: CPP, XCode 9, MSVS 2017 and above                          *
+ Programmers: Bushmanov Maksim Sergeevich, Zaycev Evgeniy Pavlovich   *
+ Created: 3/11/2017                                                   *
+ Last revision: 9/11/2017                                             *
+ *********************************************************************/
 #include <iostream>
-//#include <fstream>
 using namespace std;
 
 
 int main() {
-   /* char Mass[255];
-    ifstream file("test.txt");
-    if (!file.is_open()) {
-        cout << "Ошибка! Файл не найден!" << endl;
-    }
-    else {
-        file >> Mass;
-        cout << Mass << endl;
-    */
-    int Mass[] = {2,3,4,6,-8,7,1,-9,6};
-    int Size = (sizeof(Mass)/sizeof(int));
-    int result = 1;
-    int iMin = -1;
-    int min = Mass[0];
-    double sum = 0;
-    
+    int Mass[] = {2,3,4,6,-8,7,1,-9,6}; // Заданный массив
+    int Size = (sizeof(Mass)/sizeof(int)); // Размер массива
+    int result = 1; // Результат перемножения нечетных элементов в массиве
+    int iMin = -1; // Индекс минимального по модулю элемента в массиве
+    int min = Mass[0]; // Минимальное значение по модулю в массиве
+    double sum = 0;// Сумма элементов до минимального значения по модулю в массиве
+    double sred_arifm;
     // Проверяем каждый элемент массива
     for (int i=0;i < Size;i++){
-    // Находим нечетные элементы в массиве и перемножаем их
+    // Находим нечетные элементы в массиве
         if ((Mass[i]%2) != 0){
-            result *= Mass[i];
+            result *= Mass[i]; // Перемножаем их
         }
-    // Находим минимальный по модулю элемент
+    // Находим минимальный по модулю элемент и его индекс
         if (abs(Mass[i]) < min){
             min = abs(Mass[i]);
             iMin = i;
@@ -36,10 +35,12 @@ int main() {
     for (int i=0;i < iMin;i++){
         sum += Mass[i];
     }
-
+    
+    sred_arifm = sum/iMin; // Вычисляем среднее арифметическое до минимального по модулю элементов
+    
     cout << "Перемноженные нечетные элементы в массиве: " << result << endl;
     cout << "Минимальный по модулю элемент массива: " << min << endl;
-    cout << "Среднее арифметическое до минимального по модулю элемента: " << sum/iMin << endl;
+    cout << "Среднее арифметическое до минимального по модулю элемента: " << sred_arifm << endl;
     
     return 0;
 }
