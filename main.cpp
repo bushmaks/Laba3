@@ -24,11 +24,9 @@ long long int GetSizeOfFile(const char* path){
 
 int GetNumber(const char* symbols, int length){
     int res = 0;
-    cout << "Function sym: " << symbols[0] << " Len: " << length << endl;
     for (int i = 1; i <= length; i++){
          res += (symbols[i-1]-'0') * pow(10, length - i);
     }
-    cout << "Res: " << res << endl;
     return res;
 }
 
@@ -62,7 +60,6 @@ int main(){
                     char numberSymbolsArray[10];
                     int countSymbol = 0;
                     while ((int)fileContent[j] > 47 && (int)fileContent[j] < 58) {
-                        cout << " FileContent: " << fileContent[j] << endl;
                         numberSymbolsArray[countSymbol] = fileContent[j];
                         countSymbol++;
                         j++;
