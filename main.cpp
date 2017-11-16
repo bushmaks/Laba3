@@ -33,12 +33,11 @@ int GetNumber(const char* symbols, int length){ // Атрибуты: масси�
 int main(){
     long long int fileSize = GetSizeOfFile(FName); // Размер файла в байт
     char fileContent[fileSize]; // Массив для файла
-   try {
        
        ifstream fin(FName, ifstream::binary); // Открываем файл в fin, в бинарном виде
        
         if (!fin.is_open()) { // Проверка на чтение файла
-            throw "Ошибка чтения файла.";
+            cout << "Ошибка чтения файла." << endl;
         }
         else { // Если файл открыт
             for  (int i = 0; !fin.eof(); i++) { // Цикл для занесения файла в массив. До конца файла
@@ -69,9 +68,5 @@ int main(){
             }
             cout << endl;
         }
-    }
-    catch(exception e) {
-        cout << e.what() << endl;
-    }
     return 0;
 }
