@@ -46,14 +46,14 @@ int main(){
             }
             
             int count = 0; // Сетчик для перемещения в массиве fileContent
-            int foundedArraySize; // Найденый размер массива
+            int foundedArraySize; // Найденый размер рабочего массива
             
             do { // Ищем размер массива. Если не число, то ищем дальше поэлементно
-                foundedArraySize = (int)fileContent[count];
+                foundedArraySize = fileContent[count]-'0';
                 count++;
             }
-            while (!((int)foundedArraySize > 47 && (int)foundedArraySize < 58));
-            
+            while (!(foundedArraySize >= 0 && foundedArraySize <= 9));
+            cout << foundedArraySize << endl;
             int Array[foundedArraySize]; // Рабочий массив
             for (int i = 0, j = count; j < fileSize;i++,j++){ // Цикл поиска чисел массива. j - номер элемента в массиве  count - место после размерности массива.
                 
@@ -80,7 +80,7 @@ int main(){
             double sum = 0;// Сумма элементов до минимального значения по модулю в массиве
             double sred_arifm;
             // Проверяем каждый элемент массива
-            for (int i=0;i < foundedArraySize;i++){
+            for (int i=0; i < foundedArraySize; i++){
                 // Находим нечетные элементы в массиве
                 if ((Array[i]%2) != 0){
                     result *= Array[i]; // Перемножаем их
@@ -96,11 +96,15 @@ int main(){
                 sum += Array[i];
             }
             
-            sred_arifm = sum/iMin; // Вычисляем среднее арифметическое до минимального по модулю элементов
-            
             cout << "Перемноженные нечетные элементы в массиве: " << result << endl;
             cout << "Минимальный по модулю элемент массива: " << min << endl;
-            cout << "Среднее арифметическое до минимального по модулю элемента: " << sred_arifm << endl;
+            if (iMin == 0) {
+                cout << "Среднее арифметическое невоможно посчитать"<< endl;
+            }
+            else {
+                sred_arifm = sum/iMin; // Вычисляем среднее арифметическое до минимального по модулю элементов
+                cout << "Среднее арифметическое до минимального по модулю элемента: " << sred_arifm << endl;
+            }
         }
     return 0;
 }
