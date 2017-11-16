@@ -43,7 +43,6 @@ int main(){
         else {
             for  (int i = 0; !fin.eof(); i++) {
                 fileContent[i] = fin.get();
-                //cout << i << ": " << (fileContent[i]) << endl;
             }
             int count = 0;
             int foundedArraySize;
