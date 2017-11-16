@@ -10,6 +10,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
+#include <cmath>
 
 using namespace std;
 
@@ -21,8 +22,19 @@ long long int GetSizeOfFile(const char* path){
 }
 
 
+int GetNumber(const char* symbols, int length){
+    int res = 0;
+    cout << "Function sym: " << symbols[0] << " Len: " << length << endl;
+    for (int i = 1; i <= length; i++){
+         res += (symbols[i-1]-'0') * pow(10, length - i);
+    }
+    cout << "Res: " << res << endl;
+    return res;
+}
+
 int main(){
-    char fileContent[GetSizeOfFile(FName)];
+    long long int fileSize = GetSizeOfFile(FName);
+    char fileContent[fileSize];
    try {
        
        ifstream fin(FName, ifstream::binary);
@@ -36,12 +48,30 @@ int main(){
                 //cout << i << ": " << (fileContent[i]) << endl;
             }
             int count = 0;
-            char arraySize;
+            int foundedArraySize;
             do {
-                arraySize = fileContent[count];
+                foundedArraySize = (int)fileContent[count];
                 count++;
             }
-            while (!((int)arraySize > 47 && (int)arraySize < 58));
+            while (!((int)foundedArraySize > 47 && (int)foundedArraySize < 58));
+            
+            
+            int Array[foundedArraySize];
+            for (int i = 0, j = count; j < fileSize;){
+                if (fileContent[j] != ' ' && ((int)fileContent[j] > 47 && (int)fileContent[j] < 58)) {
+                    char numberSymbolsArray[10];
+                    int countSymbol = 0;
+                    while ((int)fileContent[j] > 47 && (int)fileContent[j] < 58) {
+                        cout << " FileContent: " << fileContent[j] << endl;
+                        numberSymbolsArray[countSymbol] = fileContent[j];
+                        countSymbol++;
+                        j++;
+                    }
+                    Array[i] = GetNumber(numberSymbolsArray, countSymbol);
+                }
+                i++;
+                j++;
+            }
         }
     }
     catch(exception e) {
