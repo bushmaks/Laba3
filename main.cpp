@@ -40,28 +40,34 @@ int main(){
             cout << "Ошибка чтения файла." << endl;
         }
         else { // Если файл открыт
+            
             for  (int i = 0; !fin.eof(); i++) { // Цикл для занесения файла в массив. До конца файла
                 fileContent[i] = fin.get();
             }
+            
             int count = 0; // Сетчик для перемещения в массиве fileContent
             int foundedArraySize; // Найденый размер массива
+            
             do { // Ищем размер массива. Если не число, то ищем дальше поэлементно
                 foundedArraySize = (int)fileContent[count];
                 count++;
             }
             while (!((int)foundedArraySize > 47 && (int)foundedArraySize < 58));
             
-            
             int Array[foundedArraySize]; // Рабочий массив
             for (int i = 0, j = count; j < fileSize;i++,j++){ // Цикл поиска чисел массива. j - номер элемента в массиве  count - место после размерности массива.
+                
                 if (fileContent[j] != ' ' && ((int)fileContent[j] > 47 && (int)fileContent[j] < 58)) { // Если не пробел и не число то
+                    
                     char numberSymbolsArray[10]; // Массив для вычисления числа более одного разряда
                     int countSymbol = 0; // Счетчик разрядности и индекса массива
+                    
                     while ((int)fileContent[j] > 47 && (int)fileContent[j] < 58) { // Пока числа выполняется цикл
                         numberSymbolsArray[countSymbol] = fileContent[j]; // Присваиваем элемент из файла в массив разрядности
                         countSymbol++;
                         j++; // Следущий элемент в файле
                     }
+                    
                     Array[i] = GetNumber(numberSymbolsArray, countSymbol); // Присваивание рабочему массиву число из массива разрядности
                     cout << Array[i] << " "; // Вывод массива из файла
                 }
