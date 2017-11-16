@@ -8,39 +8,44 @@
  Last revision: 9/11/2017                                             *
  *********************************************************************/
 #include <iostream>
+#include <fstream>
+#include <cstdlib>
+
 using namespace std;
 
+const char *FName = "Mass.txt"; // Название исходного файла
 
-int main() {
-    int Mass[] = {2,2,3,3,5,1}; // Заданный массив
-    int Size = (sizeof(Mass)/sizeof(int)); // Размер массива
-    int result = 1; // Результат перемножения нечетных элементов в массиве
-    int iMin = 0; // Индекс минимального по модулю элемента в массиве
-    int min = Mass[0]; // Минимальное значение по модулю в массиве
-    double sum = 0;// Сумма элементов до минимального значения по модулю в массиве
-    double sred_arifm;
-    // Проверяем каждый элемент массива
-    for (int i=0;i < Size;i++){
-    // Находим нечетные элементы в массиве
-        if ((Mass[i]%2) != 0){
-            result *= Mass[i]; // Перемножаем их
+long long int GetSizeOfFile(const char* path){
+    ifstream in(path, ifstream::ate | ifstream::binary);
+    return in.tellg();
+}
+
+
+int main(){
+    char fileContent[GetSizeOfFile(FName)];
+   try {
+       
+       ifstream fin(FName, ifstream::binary);
+       
+        if(!fin.is_open()){
+            throw "Ошибка чтения файла.";
         }
-    // Находим минимальный по модулю элемент и его индекс
-        if (abs(Mass[i]) < min){
-            min = abs(Mass[i]);
-            iMin = i;
+        else {
+            for  (int i = 0; !fin.eof(); i++) {
+                fileContent[i] = fin.get();
+                //cout << i << ": " << (fileContent[i]) << endl;
+            }
+            int count = 0;
+            char arraySize;
+            do {
+                arraySize = fileContent[count];
+                count++;
+            }
+            while (!((int)arraySize > 47 && (int)arraySize < 58));
         }
     }
-    // Вычисление суммы элементов до минимального по модулю элемента
-    for (int i=0;i < iMin;i++){
-        sum += Mass[i];
+    catch(exception e) {
+        cout << e.what() << endl;
     }
-    
-    sred_arifm = sum/iMin; // Вычисляем среднее арифметическое до минимального по модулю элементов
-    
-    cout << "Перемноженные нечетные элементы в массиве: " << result << endl;
-    cout << "Минимальный по модулю элемент массива: " << min << endl;
-    cout << "Среднее арифметическое до минимального по модулю элемента: " << sred_arifm << endl;
-    
     return 0;
 }
