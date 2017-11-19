@@ -74,11 +74,13 @@ int main(){
                         countSymbol++;
                         j++; // Следущий элемент в файле
                     }
+                    if ((fileContent[j+1] != '-' && fileContent[j] != '-') || (fileContent[j-1] != '-' && fileContent[j] != '-')) {
 
-                    Array[i] = GetNumber(numberSymbolsArray, countSymbol); // Присваивание рабочему массиву число из массива разрядности
+                        Array[i] = GetNumber(numberSymbolsArray, countSymbol); // Присваивание рабочему массиву число из массива разрядности
 //                    cout << Array[i] << " "; // Вывод рабочего массива из файла
-                    Array[i] *= znak;
+                        Array[i] *= znak;
                     i++;
+                    }
                 }
             }
             
