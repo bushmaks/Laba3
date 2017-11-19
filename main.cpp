@@ -14,7 +14,7 @@
 
 using namespace std;
 
-const char *FName = "Mass.txt"; // Название исходного файла
+const char *FName = "Array.txt"; // Название исходного файла
 
 long long int GetSizeOfFile(const char* path){ // Функция для вычисления размера файла.
     ifstream in(path, ifstream::ate | ifstream::binary); // Открываем заданный файл и переставляем курсор в конец.
@@ -24,31 +24,22 @@ long long int GetSizeOfFile(const char* path){ // Функция для вычи
 
 int GetNumber(const char* symbols, int length){ // Атрибуты: массив, длина массива и разрядность числа. Функция для определения номера: 1 разрядный, 2 разрядный и т.д.
     int res = 0; // Результат выполнения
-//    int znak = 1;
-//    int i = 1;
-//    if (kol % 2 != 0 ) {
-//        znak = -1;
-//        i = 1 + kol;
-//    }
-//    else {
-//        i = length + kol;
-//        length -= kol;
-//    }
+
     for (int i = 1; i <= length; i++){ // Цикл для вычисления разрядности. Например: Число - 150. Вычисление: 100 + 50 + 0.
         res += (symbols[i-1]-'0') * pow(10, length - i); // i = 1 потому что разрядность начинается с 1. "-'0'" - нужен для конвертации из char в int. (int) не работает.
     }
-//    res *= znak;
+
     return res;
 }
 
 int main(){
     long long int fileSize = GetSizeOfFile(FName); // Размер файла в байтах
     char fileContent[fileSize]; // Массив для файла
-    //int znak = 1;
+    
        ifstream fin(FName, ifstream::binary); // Открываем файл в fin, в бинарном виде
        
         if (!fin.is_open()) { // Проверка на чтение файла
-            cout << "Ошибка чтения файла." << endl;
+            cout << "Ошибка чтения файла. Добавьте файл Array.txt в каталог программы." << endl;
         }
         else { // Если файл открыт
             
@@ -77,8 +68,7 @@ int main(){
                     }
                     char numberSymbolsArray[10]; // Массив для вычисления числа более одного разряда
                     int countSymbol = 0; // Счетчик разрядности и индекса массива
-//                    int kol = 0;
-                    // 45 - минус
+
                     while (fileContent[j] >= '0' && fileContent[j] <= '9') { // Пока числа выполняется цикл
                         numberSymbolsArray[countSymbol] = fileContent[j]; // Присваиваем элемент из файла в массив разрядности
                         countSymbol++;
@@ -86,9 +76,8 @@ int main(){
                     }
 
                     Array[i] = GetNumber(numberSymbolsArray, countSymbol); // Присваивание рабочему массиву число из массива разрядности
-                    cout << Array[i] << " "; // Вывод рабочего массива из файла
+//                    cout << Array[i] << " "; // Вывод рабочего массива из файла
                     Array[i] *= znak;
-
                     i++;
                 }
             }
