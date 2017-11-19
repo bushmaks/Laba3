@@ -62,10 +62,12 @@ int main(){
                 
                 if (fileContent[j] != ' ' && ((fileContent[j] >= '0' && fileContent[j] <= '9') || fileContent[j] == '-')) { // Если не пробел и число то
                     int znak = 1;
+                    
                     while ((fileContent[j+1] == '-' || (fileContent[j+1] >= '0' && fileContent[j+1] <= '9')) && fileContent[j] == '-') {
                         znak *= -1;
                         j++;
                     }
+                    
                     char numberSymbolsArray[10]; // Массив для вычисления числа более одного разряда
                     int countSymbol = 0; // Счетчик разрядности и индекса массива
 
@@ -74,12 +76,20 @@ int main(){
                         countSymbol++;
                         j++; // Следущий элемент в файле
                     }
-                    if ((fileContent[j+1] != '-' && fileContent[j] != '-') || (fileContent[j-1] != '-' && fileContent[j] != '-')) {
-
+                    
+                    if (fileContent[j-1] >= '0' && fileContent[j-1] <= '9' && fileContent[j] == '-') {
+                        cout << "В вашем массиве есть неверный элемент типа x-y, где x и y целые числа.\nВведите правильный элемент: ";
+                        cin >> Array[i];
+                        i++;
+                        while (fileContent[j] == '-') {
+                            j++;
+                        }
+                    }
+                    else if ((fileContent[j+1] != '-' && fileContent[j] != '-') || (fileContent[j-1] != '-' && fileContent[j] != '-')) { // Только если не будет минуса без числа
                         Array[i] = GetNumber(numberSymbolsArray, countSymbol); // Присваивание рабочему массиву число из массива разрядности
 //                    cout << Array[i] << " "; // Вывод рабочего массива из файла
                         Array[i] *= znak;
-                    i++;
+                        i++;
                     }
                 }
             }
