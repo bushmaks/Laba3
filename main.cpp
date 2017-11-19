@@ -1,5 +1,5 @@
 /*********************************************************************
- Progect name: Laba3                                                  *
+ Project name: Laba3                                                  *
  Project type: Win32 Console Application                              *
  File name: main.cpp                                                  *
  Language: CPP, XCode 9, MSVS 2017 and above                          *
