@@ -5,7 +5,7 @@
  Language: CPP, XCode 9, MSVS 2017 and above                          *
  Programmers: Bushmanov Maksim Sergeevich, Zaycev Evgeniy Pavlovich   *
  Created: 3/11/2017                                                   *
- Last revision: 9/11/2017                                             *
+ Last revision: 19/11/2017                                             *
  *********************************************************************/
 #include <iostream>
 #include <fstream>
@@ -24,16 +24,27 @@ long long int GetSizeOfFile(const char* path){ // Функция для вычи
 
 int GetNumber(const char* symbols, int length){ // Атрибуты: массив, длина массива и разрядность числа. Функция для определения номера: 1 разрядный, 2 разрядный и т.д.
     int res = 0; // Результат выполнения
+//    int znak = 1;
+//    int i = 1;
+//    if (kol % 2 != 0 ) {
+//        znak = -1;
+//        i = 1 + kol;
+//    }
+//    else {
+//        i = length + kol;
+//        length -= kol;
+//    }
     for (int i = 1; i <= length; i++){ // Цикл для вычисления разрядности. Например: Число - 150. Вычисление: 100 + 50 + 0.
         res += (symbols[i-1]-'0') * pow(10, length - i); // i = 1 потому что разрядность начинается с 1. "-'0'" - нужен для конвертации из char в int. (int) не работает.
     }
+//    res *= znak;
     return res;
 }
 
 int main(){
     long long int fileSize = GetSizeOfFile(FName); // Размер файла в байтах
     char fileContent[fileSize]; // Массив для файла
-       
+    //int znak = 1;
        ifstream fin(FName, ifstream::binary); // Открываем файл в fin, в бинарном виде
        
         if (!fin.is_open()) { // Проверка на чтение файла
@@ -53,37 +64,50 @@ int main(){
                 count++;
             }
             while (!(foundedArraySize >= 0 && foundedArraySize <= 9));
-            cout << foundedArraySize << endl;
+            
             int Array[foundedArraySize]; // Рабочий массив
-            for (int i = 0, j = count; j < fileSize;i++,j++){ // Цикл поиска чисел массива. j - номер элемента в массиве  count - место после размерности массива.
+
+            for (int i = 0, j = count; j < fileSize;j++){ // Цикл поиска чисел массива. j - номер элемента в массиве  count - место после размерности массива.
                 
-                if (fileContent[j] != ' ' && ((int)fileContent[j] > 47 && (int)fileContent[j] < 58)) { // Если не пробел и не число то
-                    
+                if (fileContent[j] != ' ' && ((fileContent[j] >= '0' && fileContent[j] <= '9') || fileContent[j] == '-')) { // Если не пробел и число то
+                    int znak = 1;
+                    while ((fileContent[j+1] == '-' || (fileContent[j+1] >= '0' && fileContent[j+1] <= '9')) && fileContent[j] == '-') {
+                        znak *= -1;
+                        j++;
+                    }
                     char numberSymbolsArray[10]; // Массив для вычисления числа более одного разряда
                     int countSymbol = 0; // Счетчик разрядности и индекса массива
-                    
-                    while ((int)fileContent[j] > 47 && (int)fileContent[j] < 58) { // Пока числа выполняется цикл
+//                    int kol = 0;
+                    // 45 - минус
+                    while (fileContent[j] >= '0' && fileContent[j] <= '9') { // Пока числа выполняется цикл
                         numberSymbolsArray[countSymbol] = fileContent[j]; // Присваиваем элемент из файла в массив разрядности
                         countSymbol++;
                         j++; // Следущий элемент в файле
                     }
-                    
+
                     Array[i] = GetNumber(numberSymbolsArray, countSymbol); // Присваивание рабочему массиву число из массива разрядности
                     cout << Array[i] << " "; // Вывод рабочего массива из файла
+                    Array[i] *= znak;
+
+                    i++;
                 }
             }
-            cout << endl;
             
             int result = 1; // Результат перемножения нечетных элементов в массиве
+            int countNechet = 0;
+            int znam = 0;
             int iMin = 0; // Индекс минимального по модулю элемента в массиве
-            int min = Array[0]; // Минимальное значение по модулю в массиве
+            int min = abs(Array[0]); // Минимальное значение по модулю в массиве
             double sum = 0;// Сумма элементов до минимального значения по модулю в массиве
             double sred_arifm;
             // Проверяем каждый элемент массива
+            cout << "Заданный массив: ";
             for (int i=0; i < foundedArraySize; i++){
+                cout << Array[i] << " "; // Вывод рабочего массива из файла
                 // Находим нечетные элементы в массиве
                 if ((Array[i]%2) != 0){
-                    result *= Array[i]; // Перемножаем их
+                    result *= Array[i];
+                    countNechet++;
                 }
 
                 if (abs(Array[i]) < min){ // Находим минимальный по модулю элемент и его индекс
@@ -91,18 +115,24 @@ int main(){
                     iMin = i;
                 }
             }
+            cout << endl;
             // Вычисление суммы элементов до минимального по модулю элемента
-            for (int i=0;i < iMin;i++){
+            for (int i=0; i <= iMin; i++){
                 sum += Array[i];
+                znam++;
             }
-            
-            cout << "Перемноженные нечетные элементы в массиве: " << result << endl;
-            cout << "Минимальный по модулю элемент массива: " << min << endl;
-            if (iMin == 0) {
-                cout << "Среднее арифметическое невоможно посчитать"<< endl;
+            if (countNechet > 1) {
+                cout << "Перемноженные нечетные элементы в массиве: " << result << endl;
             }
             else {
-                sred_arifm = sum/iMin; // Вычисляем среднее арифметическое до минимального по модулю элементов
+                cout << "Перемножить нечетные элементы не удалось. (Либо их нет, либо элемент один.)" << endl;
+                }
+            if (iMin == 0) {
+                cout << "Среднее арифметическое до минимального по модулю элемента невозможно вычислить."<< endl;
+            }
+            else {
+                sred_arifm = sum/znam; // Вычисляем среднее арифметическое до минимального по модулю элементов
+                cout << "Минимальный по модулю элемент массива: " << min << endl;
                 cout << "Среднее арифметическое до минимального по модулю элемента: " << sred_arifm << endl;
             }
         }
