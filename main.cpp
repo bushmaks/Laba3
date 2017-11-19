@@ -57,8 +57,8 @@ int main(){
             while (!(foundedArraySize >= 0 && foundedArraySize <= 9));
             
             int Array[foundedArraySize]; // Рабочий массив
-
-            for (int i = 0, j = count; j < fileSize;j++){ // Цикл поиска чисел массива. j - номер элемента в массиве  count - место после размерности массива.
+            int i = 0;
+            for (int j = count; j < fileSize;j++){ // Цикл поиска чисел массива. j - номер элемента в массиве  count - место после размерности массива.
                 
                 if (fileContent[j] != ' ' && ((fileContent[j] >= '0' && fileContent[j] <= '9') || fileContent[j] == '-')) { // Если не пробел и число то
                     int znak = 1;
@@ -92,6 +92,12 @@ int main(){
                         i++;
                     }
                 }
+            }
+            if (i != foundedArraySize) cout << "У вас не хватает элементов в массиве. Добавьте их сейчас или измените размерность в файле Array.txt\nДобавляйте эелементы по одному." << endl;
+            while (i != foundedArraySize) {
+                cout << "Элемент # " << i << ": ";
+                cin >> Array[i];
+                i++;
             }
             
             int result = 1; // Результат перемножения нечетных элементов в массиве
