@@ -1,5 +1,5 @@
 /*********************************************************************
- Progect name: Laba3                                                  *
+ Project name: Laba3                                                  *
  Project type: Win32 Console Application                              *
  File name: main.cpp                                                  *
  Language: CPP, XCode 9, MSVS 2017 and above                          *
@@ -9,7 +9,6 @@
  *********************************************************************/
 #include <iostream>
 #include <fstream>
-#include <cstdlib>
 #include <cmath>
 
 using namespace std;
@@ -94,7 +93,7 @@ int main(){
                 }
             }
             if (i != foundedArraySize) cout << "У вас не хватает элементов в массиве. Добавьте их сейчас или измените размерность в файле Array.txt\nДобавляйте эелементы по одному." << endl;
-            while (i != foundedArraySize) {
+            while (i < foundedArraySize) {
                 cout << "Элемент # " << i << ": ";
                 cin >> Array[i];
                 i++;
