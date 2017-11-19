@@ -5,7 +5,7 @@
  Language: CPP, XCode 9, MSVS 2017 and above                          *
  Programmers: Bushmanov Maksim Sergeevich, Zaycev Evgeniy Pavlovich   *
  Created: 3/11/2017                                                   *
- Last revision: 19/11/2017                                             *
+ Last revision: 19/11/2017                                            *
  *********************************************************************/
 #include <iostream>
 #include <fstream>
