@@ -47,15 +47,19 @@ int main(){
             }
             
             int count = 0; // Сетчик для перемещения в массиве fileContent
-            int foundedArraySize; // Найденый размер рабочего массива
+            int k = 0;
+            char foundedSizeArray[10]; // Найденый размер рабочего массива
+            int foundedSize;
             
-            do { // Ищем размер массива. Если не число, то ищем дальше поэлементно
-                foundedArraySize = fileContent[count]-'0';
+            while ((fileContent[count] >= '0' && fileContent[count] <= '9') || fileContent[count] == ' ') { // Пока числа выполняется цикл
+                if (fileContent[count] >= '0' && fileContent[count] <= '9') {
+                    foundedSizeArray[k] = fileContent[count]; // Присваиваем элемент из файла в массив разрядности
+                    k++; // Следущий элемент в файле
+                }
                 count++;
             }
-            while (!(foundedArraySize >= 0 && foundedArraySize <= 9));
-            
-            int Array[foundedArraySize]; // Рабочий массив
+            foundedSize = GetNumber(foundedSizeArray, k);
+            int Array[foundedSize]; // Рабочий массив
             int i = 0;
             for (int j = count; j < fileSize;j++){ // Цикл поиска чисел массива. j - номер элемента в массиве  count - место после размерности массива.
                 
@@ -86,16 +90,26 @@ int main(){
                     }
                     else if ((fileContent[j+1] != '-' && fileContent[j] != '-') || (fileContent[j-1] != '-' && fileContent[j] != '-')) { // Только если не будет минуса без числа
                         Array[i] = GetNumber(numberSymbolsArray, countSymbol); // Присваивание рабочему массиву число из массива разрядности
-//                    cout << Array[i] << " "; // Вывод рабочего массива из файла
                         Array[i] *= znak;
                         i++;
                     }
                 }
             }
-            if (i < foundedArraySize) cout << "У вас не хватает элементов в массиве. Добавьте их сейчас или измените размерность в файле Array.txt\nДобавляйте эелементы по одному." << endl;
-            while (i < foundedArraySize) {
+            if (i < foundedSize) cout << "У вас не хватает элементов в массиве(Размерность: " << foundedSize << "). Добавьте их сейчас или измените размерность в файле Array.txt\nДобавляйте эелементы по одному." << endl;
+            // Не хватает проверки вводимого элемента, элемент должен быть целым числом, возможен "-".
+            while (i < foundedSize) {
                 cout << "Элемент # " << i << ": ";
-                cin >> Array[i];
+                char a;
+                cin >> a;
+                if (a >= '0' && a <= '9'){
+                }
+                else {
+                    while (a <= 0 && a >= 9){
+                    cout << "Нужно вводить целое число!\nЭлемент # " << i << ": ";
+                    cin >> a;
+                }
+                }
+                Array[i] = a;
                 i++;
             }
             
@@ -108,7 +122,7 @@ int main(){
             double sred_arifm;
             // Проверяем каждый элемент массива
             cout << "Заданный массив: ";
-            for (int i=0; i < foundedArraySize; i++){
+            for (int i=0; i < foundedSize; i++){
                 cout << Array[i] << " "; // Вывод рабочего массива из файла
                 // Находим нечетные элементы в массиве
                 if ((Array[i]%2) != 0){
