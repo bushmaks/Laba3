@@ -5,7 +5,7 @@
  Language: CPP, XCode 9, MSVS 2017 and above                          *
  Programmers: Bushmanov Maksim Sergeevich, Zaycev Evgeniy Pavlovich   *
  Created: 3/11/2017                                                   *
- Last revision: 19/11/2017                                            *
+ Last revision: 23/11/2017                                            *
  *********************************************************************/
 #include <iostream>
 #include <fstream>
@@ -45,81 +45,65 @@ int main(){
             for  (int i = 0; !fin.eof(); i++) { // Цикл для занесения файла в массив. До конца файла
                 fileContent[i] = fin.get();
             }
-            
+            fin.close(); // Закрываем файл
             int count = 0; // Сетчик для перемещения в массиве fileContent
-            int k = 0;
-            char foundedSizeArray[10]; // Найденый размер рабочего массива
-            int foundedSize;
-            while (!(fileContent[count] >= '0' && fileContent[count] <= '9')) count++;
-            while ((fileContent[count] >= '0' && fileContent[count] <= '9') || fileContent[count] == ' ') { // Пока числа выполняется цикл
-                if (fileContent[count] >= '0' && fileContent[count] <= '9') {
-                    foundedSizeArray[k] = fileContent[count]; // Присваиваем элемент из файла в массив разрядности
-                    k++; // Следущий элемент в файле
-                }
-                count++;
+            int countSizeArray = 0; // Счетчик разрядности размерности
+            char foundedSizeArray[10]; // Массив для нахождения размерности рабочего массива
+            int foundedSize; // Найденый размер рабочего массива
+            while (!(fileContent[count] >= '0' && fileContent[count] <= '9')) count++; // Пока не число
+            while (fileContent[count] >= '0' && fileContent[count] <= '9') { // Пока числа выполняется цикл
+                    foundedSizeArray[countSizeArray] = fileContent[count]; // Присваиваем элемент из файла в массив разрядности размерности
+                    countSizeArray++; // Разрядность размерности рабочего массива
+                    count++; // Следущий элемент в файле
             }
-            foundedSize = GetNumber(foundedSizeArray, k);
+            foundedSize = GetNumber(foundedSizeArray, countSizeArray); // Вычисляем размерность рабочего массива
             int Array[foundedSize]; // Рабочий массив
             int i = 0;
-            for (int j = count; j < fileSize;j++){ // Цикл поиска чисел массива. j - номер элемента в массиве  count - место после размерности массива.
+            for (; count < fileSize; count++){ // Цикл поиска чисел массива. count - номер элемента в массиве fileContent.
                 
-                if (fileContent[j] != ' ' && ((fileContent[j] >= '0' && fileContent[j] <= '9') || fileContent[j] == '-')) { // Если не пробел и число то
-                    int znak = 1;
+                if (fileContent[count] != ' ' && ((fileContent[count] >= '0' && fileContent[count] <= '9') || fileContent[count] == '-')) { // Если не пробел и число то
+                    int znak = 1; // Знак элемента в массиве
                     
-                    while ((fileContent[j+1] == '-' || (fileContent[j+1] >= '0' && fileContent[j+1] <= '9')) && fileContent[j] == '-') {
-                        znak *= -1;
-                        j++;
+                    while ((fileContent[count+1] == '-' || (fileContent[count+1] >= '0' && fileContent[count+1] <= '9')) && fileContent[count] == '-') { // Если минус, смена знака
+                        znak *= -1; // Смена знака элемента массива
+                        count++;
                     }
                     
                     char numberSymbolsArray[10]; // Массив для вычисления числа более одного разряда
                     int countSymbol = 0; // Счетчик разрядности и индекса массива
 
-                    while (fileContent[j] >= '0' && fileContent[j] <= '9') { // Пока числа выполняется цикл
-                        numberSymbolsArray[countSymbol] = fileContent[j]; // Присваиваем элемент из файла в массив разрядности
+                    while (fileContent[count] >= '0' && fileContent[count] <= '9') { // Пока числа выполняется цикл
+                        numberSymbolsArray[countSymbol] = fileContent[count]; // Присваиваем элемент из файла в массив разрядности
                         countSymbol++;
-                        j++; // Следущий элемент в файле
+                        count++; // Следущий элемент в файле
                     }
                     
-                    if (fileContent[j-1] >= '0' && fileContent[j-1] <= '9' && fileContent[j] == '-') {
+                    if (fileContent[count-1] >= '0' && fileContent[count-1] <= '9' && fileContent[count] == '-') { // Проверка на случай число-
                         cout << "В вашем массиве есть неверный элемент типа x-y, где x и y целые числа.\nВведите правильный элемент: ";
                         cin >> Array[i];
                         i++;
-                        while (fileContent[j] == '-') {
-                            j++;
+                        while (fileContent[count] == '-') {
+                            count++;
                         }
                     }
-                    else if ((fileContent[j+1] != '-' && fileContent[j] != '-') || (fileContent[j-1] != '-' && fileContent[j] != '-')) { // Только если не будет минуса без числа
+                    else if ((fileContent[count+1] != '-' && fileContent[count] != '-') || (fileContent[count-1] != '-' && fileContent[count] != '-')) { // Только если не будет минуса без числа
                         Array[i] = GetNumber(numberSymbolsArray, countSymbol); // Присваивание рабочему массиву число из массива разрядности
-                        Array[i] *= znak;
+                        Array[i] *= znak; // Смена знака
                         i++;
                     }
                 }
             }
-            if (i < foundedSize) {
+            if (i < foundedSize) { // Если размерность больше, чем массив
                 cout << "Размерность массива не совпадает с заданной размерностью(" << foundedSize << "). Добавьте элементы или измените размерность в файле Array.txt" << endl;
                 return 1;
             }
-            // Не хватает проверки вводимого элемента, элемент должен быть целым числом, возможен "-".
-//            while (i < foundedSize) {
-//                cout << "Элемент # " << i << ": ";
-//                char a;
-//                cin >> a;
-//                if (a <= '0' && a >= '9' ){
-//                    while (a <= 0 && a >= 9){
-//                        cout << "Нужно вводить целое число!\nЭлемент # " << i << ": ";
-//                        cin >> a;
-//                    }
-//                }
-//                else {
-//
-//                }
-//                Array[i] = a;
-//                i++;
-//            }
+            
+            
+            // Начало работы с рабочим массивом
             
             int result = 1; // Результат перемножения нечетных элементов в массиве
             int countNechet = 0;
-            int znam = 0;
+            int znam = 0; // Знаменатель
             int iMin = 0; // Индекс минимального по модулю элемента в массиве
             int min = abs(Array[0]); // Минимальное значение по модулю в массиве
             double sum = 0;// Сумма элементов до минимального значения по модулю в массиве
